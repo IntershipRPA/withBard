@@ -1,103 +1,104 @@
-# import requests
-# import os
-# from bardapi import Bard, SESSION_HEADERS
+import requests
+import json
+import re
+from readQuestion import readFile
 
 
-# session = requests.Session()
-# session.cookies.set("__Secure-1PSID", "cwjjDkVd1E4HuqXzVJZ4-h6ZCuD0qmfGfkh7yI5-SHG8X9X-SP7Fy8VKCYCEj3qur3wZiA.")
-# session.cookies.set( "__Secure-1PSIDCC", "ACA-OxOaNEOIJw4HaCt-4nciS5uAhXluA_vO_U2CRPLYHduhZbGk1T1WXUb6msBoqnlW2XmI1Q")
-# session.cookies.set("__Secure-1PSIDTS", "sidts-CjIBNiGH7p63KDJmWpgR5L-GGMZJ36kVt-PEIKn5vq69lKo6JZO6mb_nGlF9xIGUwLE-aRAA")
-# # session.headers = SESSION_HEADERS
-# session.headers = {
-#     "Host": "bard.google.com",
-#     "X-Same-Domain": "1",
-#     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
-#     "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-#     "Origin": "https://bard.google.com",
-#     "Referer": "https://bard.google.com/",
-# }
-
-
-# # auto
-# def generate_response_from_bard(user_content):
-#   print('generate_response_from_bard() 호출됨')
-
-#   try:
-#     bard = Bard(token_from_browser=True)
-#     response = bard.get_answer(user_content)['content']
-#     return response
-#   except Exception as e:
-#     print("토큰 오토값 에러 발생: ", str(e))
-#     return "쿠키 값이 잘못되었습니다."
-
-# def generate_response_from_bard(user_content):
-#   print('generate_response_from_bard() 호출됨')
-#   try:
-#     # https://bard.google.com/ 에 로그인하여 쿠키 __Secure-1PSID 의 value값을 아래에 붙여넣기
-#     token = 'cwjjDv6cqXbpl3xojnbsXBOoOeZ9o1yj24V7U-VlDyCOAVFYEOE1O5Mow6KFMT3QhyjXrQ.' 
-#     print("token: ", token)
-#     bard = Bard(token=token)
-#     response = bard.get_answer(user_content)['content']
-#     return response
-#   except Exception as e:
-#     print("토큰 직접사용 에러 발생: ", str(e))
-    
-#     try:
-#       bard = Bard(token_from_browser=True)
-#       response = bard.get_answer(user_content)['content']
-#       return response
-#     except Exception as e:
-#       print("브라우저 쿠키를 사용한 예외 발생: ", str(e))
-#       return "쿠키값이 잘못되었습니다."
+session = requests.Session()
+session.headers = {
+    "Host": "bard.google.com",
+    "X-Same-Domain": "1",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
+    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+    "Origin": "https://bard.google.com",
+    "Referer": "https://bard.google.com/",
+}
+session.cookies.set("__Secure-1PSID", "cwjjDmG0kVfZC9lrA77TQ43CSZEFSdjlUkWA-JBdglVQy4cxG1YqtPbdo9yEJBmSPZMnnA.")
+session.cookies.set( "__Secure-1PSIDCC", "ACA-OxOhFLDbfGTWCtNdlIB6ueG23X22u-TsIUXmslUNSsxMz9c9ivFLH7kzRRr1vJ-BPgVa")
+session.cookies.set("__Secure-1PSIDTS", "sidts-CjEBNiGH7rj-eU8rSv54qUne-AiJxR-ZJ2eNu7ECefzY4AxiFnkA6Ej0yQk43ZdBjEcqEAA")
 
 from bardapi import Bard
-from bardapi import BardCookies
-import os
-import requests
-os.environ['_BARD_API_KEY'] = 'cwjjDi-zC6Qwc3k3ftT0tFFSbpHlLhPJF700oNHbfqMFXskW5DKTUWxoaTHZX0X-7p7opA.'
-token='cwjjDi-zC6Qwc3k3ftT0tFFSbpHlLhPJF700oNHbfqMFXskW5DKTUWxoaTHZX0X-7p7opA.'
+# from bardapi import BardCookies
+# import os
+# os.environ['_BARD_API_KEY'] = ''
+token='cwjjDmG0kVfZC9lrA77TQ43CSZEFSdjlUkWA-JBdglVQy4cxG1YqtPbdo9yEJBmSPZMnnA.'
 
-cookie_dict = {
-    "__Secure-1PSID": "cwjjDi-zC6Qwc3k3ftT0tFFSbpHlLhPJF700oNHbfqMFXskW5DKTUWxoaTHZX0X-7p7opA.",
-    "__Secure-1PAPISID": "BQdEfnLMOY_mN5P_/A7gB-vXnYKwwXZKrR",
-    "__Secure-1PSIDCC": "ACA-OxPnX-zp18HGNYDe22Zy51kdJf7T8vmpGGVSc8aTHzaFC2y2syKMH_jmYIiJ2efQxeK4_Q",
-    # Any cookie values you want to pass session object.
-}
+# cookie_dict = {
+#     "__Secure-1PSID": "",
+#     "__Secure-1PAPISID": "",
+#     "__Secure-1PSIDCC": "",
+# }
 
-
-
-bard = BardCookies(cookie_dict=cookie_dict)
-
-# session = requests.Session()
-# session.headers = {
-#             "Host": "bard.google.com",
-#             "X-Same-Domain": "1",
-#             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
-#             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-#             "Origin": "https://bard.google.com",
-#             "Referer": "https://bard.google.com/",
-#         }
-
-# session.cookies.set("__Secure-1PSID", os.getenv("_BARD_API_KEY")) 
-# # session.cookies.set("__Secure-1PSID", token) 
-# bard = Bard(token=token, session=session, timeout=30)
+bard = Bard(token=token, session=session, timeout=30)
 
 def generate_response_from_bard(user_content):
   print('generate_response_from_bard() 호출됨')
-  print('요청---', user_content)
+  print('---user_content:', user_content)
+
+  read_file = readFile()
+  pattern = r'이곳에_질문을_작성하세요\.'
+
+  request_content = re.sub(pattern, user_content, read_file)
+  print('---request_content:', request_content)
+
   try:    
     response = []
-    response.append(bard.get_answer(user_content)['content'])
+    response.append(bard.get_answer(request_content)['content'])
 
+    print(response[0])
     
+    # JSON 형식을 추출할 정규식 패턴
+    pattern = r'```(.*?)```'
+    # print('[1]pattern', pattern)
+    # 문자열에서 JSON 부분을 추출
+    matches = re.search(pattern, response[0], re.DOTALL)
+    # print('[2]matches', matches)
 
-    
-    # new_user_content = f"{response[0]}에 따라 어떤 행동을 취해야하는지도 알려줘"
-    # print('요청---', new_user_content)
-    # response.append(bard.get_answer(new_user_content)['content'])
+    if matches:
+        json_data = matches.group(1)
+        print('[3]json_data', json_data)
 
-    print(response)
-    return response
+        # # JSON을 파싱
+        # try:
+        #     data = json.loads(json_data)
+        #     print(json.dumps(data, indent=2))  # JSON을 예쁘게 출력
+        # except json.JSONDecodeError as e:
+        #     print("JSON 파싱 오류:", e)
+    else:
+        print("JSON 데이터를 찾을 수 없습니다.")
+
+
+    # # 정규식 패턴
+    # pattern = r'```(.*?)```'
+
+    # # 문자열에서 패턴에 맞는 데이터 추출
+    # matches = re.search(pattern, response[0])
+
+    # if matches:
+    #     extracted_data = matches.group(1)
+    #     print('extracted_data[0]',extracted_data)
+    # else:
+    #     print("추출할 데이터를 찾을 수 없습니다.")
+
+    # # JSON 문자열 정리 (줄바꿈 문자와 띄어쓰기 제거)
+    # cleaned_json = extracted_data.replace('\n', '').replace(' ', '')
+    # print('cleaned_json[1]',cleaned_json)
+
+    # # JSON 문자열 추출
+    # start_index = cleaned_json.find('{')  # JSON 시작 지점 찾기
+    # print('start_index[2]',start_index) 
+    # if start_index != -1:
+    #     json_string = cleaned_json[start_index:]
+    #     print('json_string[3]',json_string)
+    #     try:
+    #         json_data = json.loads(json_string)
+    #         print(json.dumps(json_data, indent=2))  # JSON을 예쁘게 출력
+    #     except json.JSONDecodeError:
+    #         print("주어진 문자열에서 유효한 JSON 형식을 찾을 수 없습니다.")
+    # else:
+    #     print("JSON 시작 지점을 찾을 수 없습니다.")
+
+    return json_data
   except Exception as e:
-    print("브라우저 쿠키를 사용한 예외 발생: ", str(e))
-    return "쿠키값이 잘못되었습니다."
+    print("예외 발생: ", str(e))
+    return "서버 오류"

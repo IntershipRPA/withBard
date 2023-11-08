@@ -1,0 +1,121 @@
+첫번째 테스트 케이스를 제시할게. "여름철 기온이 35도 이상 올라갈 때 Motor의 쿨러가 돌아가고 CNC설비의 압력이 4.2bar이상이면 해당 모터를 중지하고 탄 흔적이 남지 않았는지 확인한다." 해당 문장을 아래의 JSON형태로 쪼갰어.
+{
+  "recipeID": 1,
+  "actions": [
+    {
+      "actionID": 1,
+      "andGroup": 1,
+      "fac": "Motor",
+      "tag": "Stop",
+      "value": "STOP",
+      "unit": "",
+      "range": "",
+      "memo": "탄 흔적이 남지 않았는지 확인한다."
+    }
+  ],
+  "conditions": [
+    {
+      "conditionID": 1,
+      "andGroup": 1,
+      "fac": "Climate",
+      "tag": "Temperature",
+      "value": "35",
+      "unit": "°C",
+      "range": "이상",
+      "memo": "여름철"
+    },
+		{
+      "conditionID": 2,
+      "andGroup": 1,
+      "fac": "Motor",
+      "tag": "Cooler",
+      "value": "INIT",
+      "unit": "",
+      "range": "",
+      "memo": ""
+    },
+    {
+      "conditionID": 3,
+      "andGroup": 1,
+      "fac": "CNC",
+      "tag": "Pressure",
+      "value": "4.2",
+      "unit": "bar",
+      "range": "이상",
+      "memo": ""
+    }
+  ]
+}
+두번째 테스트 케이스를 제시할게. "기동 시, Comp Motor의 Winding Temp를
+50도 미만으로 만들어 모터 권선이 소손되지 않도록 주의해야 하며,
+Receiver Tank 압력이 3.5bar 미만이고 After Cooler가 상태가 가동되어야
+기동 조건이 성립 됨.
+해당 조건에도 기동되지 않을 시, Oil Separator내 잔여 Air를 완전히
+Vent 시키고 다시 기동 해야 함." 해당 문장을 JSON형태로 쪼갰어.
+recipe = [{
+	recipeID : 1,
+	actions : [{
+			actionID : 1,
+			andGroup: 1 // 1 계층의 AND 조건들이 충족될 때 실행할 액션
+			fac: 'Air Compressor',
+			tag: 'Status',
+			value: 'INIT',
+			unit: "",
+			range: "",
+			memo: "",
+		},
+		{
+			actionID : 2,
+			andGroup: 2 // 2 계층의 AND 조건들이 충족될 때 실행할 액션
+			fac: 'Air Compressor',
+			tag: 'Status',
+			value: 'INIT',
+			unit: "",
+			range: "",
+			memo: "",
+		}
+	],
+	conditions : [{
+			conditionID: 1,
+			andGroup: 1 // 같은 계층의 AND조건일때 동일한 숫자를 가집니다. 1계층
+			fac: 'Comp Motor',
+			tag: 'Winding Temp',
+			value: '50',
+			unit: '°C',
+			range: '미만',
+			memo: '모터 권선이 소손되지 않도록 주의',
+		},
+		{
+			conditionID: 2,
+			andGroup: 1 // 같은 계층의 AND조건일때 동일한 숫자를 가집니다. 1계층
+			fac: 'Receiver Tank',
+			tag: 'Press',
+			value: '3.5',
+			unit: 'bar',
+			range: '미만',
+			memo: "",
+		},
+		{
+			conditionID: 3,
+			andGroup: 1 // 같은 계층의 AND조건일때 동일한 숫자를 가집니다. 1계층
+			fac: 'After Cooler',
+			tag: 'Status',
+			value: 'STARTED',
+			unit: "",
+			range: "",
+			memo: "",
+		},
+		{
+			conditionID: 4,
+			andGroup: 2 // 1 계층과는 조건관계가 OR이 됩니다. 2계층
+			fac: 'Oil Seperator',
+			tag: 'Air',
+			value: 'VENT',
+			unit: "",
+			range: "",
+			memo: "",
+		}
+	]
+}]
+
+앞의 첫번째 테스트케이스와 두번째 테스크테이스를 참고해서 앞으로 제시할 문장인 "이곳에_질문을_작성하세요."에 대해 fac은 Comp Motor, Receiver Tank, After Cooler,  Oil Separator 이고 tag는 Winding Temp, 압력, 상태, Air일 때, 어떤게 condition이고 어떤게 action인지 주의하여 반드시 한 개 이상의 condition과 한 개 이상의 action을 포함하여 제공한 JSON형식에 맞춰서 한개의 JSON형식만 제시하여 답변해줘.
