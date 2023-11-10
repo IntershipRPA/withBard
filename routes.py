@@ -13,15 +13,15 @@ session.headers = {
     "Origin": "https://bard.google.com",
     "Referer": "https://bard.google.com/",
 }
-session.cookies.set("__Secure-1PSID", "cwjjDmG0kVfZC9lrA77TQ43CSZEFSdjlUkWA-JBdglVQy4cxG1YqtPbdo9yEJBmSPZMnnA.")
-session.cookies.set( "__Secure-1PSIDCC", "ACA-OxOhFLDbfGTWCtNdlIB6ueG23X22u-TsIUXmslUNSsxMz9c9ivFLH7kzRRr1vJ-BPgVa")
-session.cookies.set("__Secure-1PSIDTS", "sidts-CjEBNiGH7rj-eU8rSv54qUne-AiJxR-ZJ2eNu7ECefzY4AxiFnkA6Ej0yQk43ZdBjEcqEAA")
+session.cookies.set("__Secure-1PSID", "dAjjDkebAXZJEa3k9B__u2-M9qUhK-O8AyvtUb46JY-rZleQ5Azx-e3zaeDyf_oo_jvP_A.")
+session.cookies.set( "__Secure-1PSIDCC", "ACA-OxPBScT607OuMi87idW_ImKMhLi-PrZFuspGWWsmHvrIuKMvnbF7NYxI-ixBV1_G-L11fw")
+session.cookies.set("__Secure-1PSIDTS", "sidts-CjEBNiGH7jldZYQHcbNv0G_NBVDqwsy_I5Z1UnH6_ppgD2zrcNmVJDsp8vrC_0QemlOUEAA")
 
 from bardapi import Bard
 # from bardapi import BardCookies
 # import os
 # os.environ['_BARD_API_KEY'] = ''
-token='cwjjDmG0kVfZC9lrA77TQ43CSZEFSdjlUkWA-JBdglVQy4cxG1YqtPbdo9yEJBmSPZMnnA.'
+token='dAjjDkebAXZJEa3k9B__u2-M9qUhK-O8AyvtUb46JY-rZleQ5Azx-e3zaeDyf_oo_jvP_A.'
 
 # cookie_dict = {
 #     "__Secure-1PSID": "",
