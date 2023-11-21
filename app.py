@@ -17,8 +17,10 @@ def hello():
 def chat_with_bard():
     data = request.get_json()
     user_message = data['message']
+    user_facs = data['facs']
+    user_tags = data['tags']
 
-    bot_reply = generate_response_from_bard(user_message)
+    bot_reply = generate_response_from_bard(user_message, user_facs, user_tags)
 
     return jsonify({"message": bot_reply})       
 
