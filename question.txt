@@ -1,0 +1,235 @@
+첫번째 테스트 케이스를 제시할게. "여름철 기온이 35도 이상 올라갈 때 Motor의 쿨러가 돌아가고 CNC설비의 압력이 4.2bar이상이면 해당 모터를 중지하고 탄 흔적이 남지 않았는지 확인한다." 해당 문장을 아래의 JSON형태로 쪼갰어.
+{
+  "action" : {
+      "fac": "Motor",
+      "tag": "Stop",
+      "val": "STOP",
+      "unit": "",
+      "range": "",
+      "memo": "탄 흔적이 남지 않았는지 확인한다."
+  },
+  "conditions": [
+    {
+      "conditionID": 1,
+      "andGroup": 1,
+      "fac": "Climate",
+      "tag": "Temperature",
+      "val": "35",
+      "unit": "°C",
+      "range": "이상",
+      "memo": "여름철"
+    },
+		{
+      "conditionID": 2,
+      "andGroup": 1,
+      "fac": "Motor",
+      "tag": "Cooler",
+      "val": "INIT",
+      "unit": "",
+      "range": "",
+      "memo": ""
+    },
+    {
+      "conditionID": 3,
+      "andGroup": 1,
+      "fac": "CNC",
+      "tag": "Pressure",
+      "val": "4.2",
+      "unit": "bar",
+      "range": "이상",
+      "memo": ""
+    }
+  ]
+}
+두번째 테스트 케이스를 제시할게. "기동 시, Comp Motor의 Winding Temp를
+50도 미만으로 만들어 모터 권선이 소손되지 않도록 주의해야 하며,
+Receiver Tank 압력이 3.5bar 미만이고 After Cooler가 상태가 가동되어야
+기동 조건이 성립 됨.
+해당 조건에도 기동되지 않을 시, Oil Separator내 잔여 Air를 완전히
+Vent 시키고 다시 기동 해야 함." 해당 문장을 JSON형태로 쪼갰어.
+recipe = [{
+	action : {
+			fac: "Air Compressor",
+			tag: "Status",
+			val: "INIT",
+			unit: "",
+			range: "",
+			memo: ""
+	},
+	conditions : [{
+			conditionID: 1,
+			andGroup: 1,
+			fac: "Comp Motor",
+			tag: "Winding Temp",
+			val: "50",
+			unit: "°C",
+			range: "미만",
+			memo: "모터 권선이 소손되지 않도록 주의"
+		},
+		{
+			conditionID: 2,
+			andGroup: 1,
+			fac: "Receiver Tank",
+			tag: "Press",
+			val: "3.5",
+			unit: "bar",
+			range: "미만",
+			memo: ""
+		},
+		{
+			conditionID: 3,
+			andGroup: 1,
+			fac: "After Cooler",
+			tag: "Status",
+			val: "STARTED",
+			unit: "",
+			range: "",
+			memo: ""
+		},
+		{
+			conditionID: 4,
+			andGroup: 2,
+			fac: "Oil Seperator",
+			tag: "Air",
+			val: "VENT",
+			unit: "",
+			range: "",
+			memo: ""
+		}
+	]
+}]
+
+세번째 테스트 케이스를 제시할게. "GGH 운전 중 Rotor 일시 정지후의 Status재 기동절차
+
+GGH 운전 중 Rotor가 정지하면 GGH속을 통과하는 미처리 및 처리 GAS의 온도차 때문에 GGH는 편 팽창이 발생하여 Rotor Seal의 Binding(끼임) 발생하므로, Rotor 일시 정지 후의 재 기동은 다음의 절차에 따라야 한다.
+
+가) Rotor Drive Motor를 이용 하여 15초 동안 Status 운전하고, 3초 동안 정지 하는 단속 운전을 여러 차례 반복한다. 이 때 Rotor Drive Motor의 Current를 Check하여 정상 상태에 도달하면 정상기동(Normal Start-Up)절차에 따라 연속 운전한다.
+
+나) 만약 위의 가)의 방법으로 기동이 불가능할 경우 Air Motor를 이용하여 8초 동안 운전하고 30초 동안 Status 정지하는 단속 운정르 여러차례 반복한 후 Rotor의 Rotate이 부드럽게 되면 Electric Motor로 Status 전환하여 정상기동(Normal Start-Up)절차에 따라 연속 운전한다.
+
+다) 당사 경험으로 Rotor가 정지 후 약 40-50분 후에 Rotor Seal Binding이 발생하며, 약 20\~22분 이내에 Rotor Drive Unit가 정상 작도하지 않으면 Boiler Load를 Status Down 시킨다. " 해당 문장을 JSON형태로 쪼갰어.
+
+recipe = [{
+	action : {
+			fac: "Rotor",
+			tag: "Status",
+			val: "RESTART",
+			unit: "",
+			range: "",
+			memo: ""
+	},
+	conditions : [{
+			conditionID: 1,
+			andGroup: 1,
+			fac: "Rotor Driver Motor",
+			tag: "Operate",
+			val: "5",
+			unit: "seconds",
+			range: "",
+			memo: "해당 단속운전을 여러차례 반복할 것"
+		},
+		{
+			conditionID: 2,
+			andGroup: 1,
+			fac: "Rotor Driver Motor",
+			tag: "Current Check",
+			val: "NORMAL",
+			unit: "",
+			range: "",
+			memo: ""
+		},
+		{
+			conditionID: 3,
+			andGroup: 1,
+			fac: "Rotor Seal",
+			tag: "Binding",
+			val: "OCCUR",
+			unit: "",
+			range: "",
+			memo: "Rotor 정지 후 약 5-10분 후"
+		},
+		{
+			conditionID: 4,
+			andGroup: 1,
+			fac: "Rotor Drive Unit",
+			tag: "Status",
+			val: "NOT NORMAL",
+			unit: "",
+			range: "",
+			memo: "Rotor 정지 후 약 5~10분 이내"
+		},
+    {
+			conditionID: 5,
+			andGroup: 1,
+			fac: "Boiler Load",
+			tag: "Status",
+			val: "Down",
+			unit: "",
+			range: "",
+			memo: ""
+		},
+    {
+			conditionID: 6,
+			andGroup: 2,
+			fac: "Air Motor",
+			tag: "Operate",
+			val: "",
+			unit: "",
+			range: "",
+			memo: "단속운전을 여러차례 반복"
+		},
+    {
+			conditionID: 7,
+			andGroup: 2,
+			fac: "Rotor",
+			tag: "Rotate",
+			val: "SMOOTH",
+			unit: "",
+			range: "",
+			memo: ""
+		},
+    {
+			conditionID: 8,
+			andGroup: 2,
+			fac: "Electric Motor",
+			tag: "Status",
+			val: "SWITCH",
+			unit: "",
+			range: "",
+			memo: "정상기동 절차에 따라 연속 운전"
+		},
+		{
+			conditionID: 9,
+			andGroup: 2,
+			fac: "Rotor Seal",
+			tag: "Binding",
+			val: "OCCUR",
+			unit: "",
+			range: "",
+			memo: "Rotor 정지 후 약 5-10분 후"
+		},
+		{
+			conditionID: 10,
+			andGroup: 2,
+			fac: "Rotor Drive Unit",
+			tag: "Status",
+			val: "NOT NORMAL",
+			unit: "",
+			range: "",
+			memo: "Rotor 정지 후 약 5~10분 이내"
+		},
+    {
+			conditionID: 11,
+			andGroup: 2,
+			fac: "Boiler Load",
+			tag: "Status",
+			val: "Down",
+			unit: "",
+			range: "",
+			memo: ""
+		}
+	]
+}]
+
+
+앞의 테스트테이스 세 개를 참고해서 앞으로 제시할 문장인 "이곳에_질문을_작성하세요."에 대해 fac은 "이곳에_설비를_작성하세요." 이고 tag는 "이곳에_태그를_작성하세요."일 때, 어떤게 condition이고 어떤게 action인지 주의하여 반드시 한 개 이상의 condition과 오직 한 개의 action을 포함하여 제공한 JSON형식에 맞춰서 전체 내용을 하나의 JSON형식에 담아서 제시하여 답변해줘.
